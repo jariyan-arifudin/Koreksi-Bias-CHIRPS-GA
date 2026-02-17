@@ -55,3 +55,20 @@ Pastikan struktur folder data Anda di Google Drive/Local sesuai dengan konfigura
 ├── script.py               # Script utama
 ├── requirements.txt        # Daftar pustaka Python
 └── README.md               # Dokumentasi proyek
+
+## Prasyarat Instalasi
+
+Script ini dikembangkan menggunakan bahasa pemrograman **Python** dan dioptimalkan untuk berjalan di lingkungan **Google Colab**. Berikut adalah dependensi pustaka (*library*) yang diperlukan untuk menjalankan analisis:
+
+### Daftar Pustaka Utama
+* **Analisis Geospasial:** `rasterio`, `geopandas`, `shapely`, `folium`
+* **Optimasi Heuristik:** `pygad` (Genetic Algorithm)
+* **Pengolahan Data:** `pandas`, `numpy`, `scikit-learn`, `scipy`
+* **Visualisasi:** `matplotlib`, `seaborn`
+* **Utilitas:** `tqdm` (Progress bar)
+
+### Perintah Instalasi
+Salin dan jalankan perintah berikut pada sel pertama Google Colab atau terminal lokal Anda untuk menginstal seluruh dependensi:
+
+```bash
+pip install rasterio geopandas shapely matplotlib scikit-learn pandas numpy seaborn tqdm folium pygad
