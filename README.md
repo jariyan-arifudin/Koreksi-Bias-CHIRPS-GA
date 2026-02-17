@@ -40,9 +40,9 @@ Script ini mencakup seluruh alur kerja pemrosesan data, meliputi:
     - Perhitungan performa model menggunakan metrik NSE (*Nash-Sutcliffe Efficiency*), Pearson Correlation ($r$), dan RSR.
     - Visualisasi perbandingan data sebelum dan sesudah koreksi.
 
-## Prasyarat Instalasi
+## Prasyarat Instalasi (Prerequisites)
 
-Script ini dikembangkan menggunakan bahasa pemrograman **Python** dan dioptimalkan untuk berjalan di lingkungan **Google Colab**. Berikut adalah dependensi pustaka (*library*) yang diperlukan untuk menjalankan analisis:
+Script ini dikembangkan menggunakan bahasa pemrograman **Python** dan dioptimalkan untuk berjalan di lingkungan **Google Colab**. Berikut adalah dependensi pustaka (*library*) yang diperlukan:
 
 ### Daftar Pustaka Utama
 * **Analisis Geospasial:** `rasterio`, `geopandas`, `shapely`, `folium`
@@ -52,24 +52,50 @@ Script ini dikembangkan menggunakan bahasa pemrograman **Python** dan dioptimalk
 * **Utilitas:** `tqdm` (Progress bar)
 
 ### Perintah Instalasi
-Salin dan jalankan perintah berikut pada sel pertama Google Colab atau terminal lokal Anda untuk menginstal seluruh dependensi:
+Salin dan jalankan perintah berikut pada sel pertama Google Colab atau terminal lokal Anda:
 
 ```bash
-"pip install rasterio geopandas shapely matplotlib scikit-learn pandas numpy seaborn tqdm folium pygad"
+pip install rasterio geopandas shapely matplotlib scikit-learn pandas numpy seaborn tqdm folium pygad
+
 ```
 
-## Struktur Direktori
+## Struktur Direktori Data
 
-Pastikan struktur folder data Anda di Google Drive/Local sesuai dengan konfigurasi berikut:
+Pastikan struktur folder data Anda di Google Drive/Local sesuai dengan konfigurasi berikut agar script berjalan lancar:
 
 ```text
-├── data/
-│   ├── CHIRPS v3/          # File .tif data mentah CHIRPS
-│   ├── Batas Adm/          # Shapefile batas wilayah studi
-│   └── Data Stasiun/       # File .csv data curah hujan observasi
-├── output/
-│   ├── bias_corrected_ga/  # (Auto-generated) Hasil raster terkoreksi
-│   └── validation/         # (Auto-generated) Tabel & plot validasi
-├── script.py               # Script utama
-├── requirements.txt        # Daftar pustaka Python
-└── README.md               # Dokumentasi proyek
+├── CHIRPS v3/          # Folder berisi file .tif data mentah CHIRPS
+├── Batas Adm Jambi/    # Shapefile batas wilayah studi (Adm_Jambi_Prov.shp)
+├── Data Stasiun BWS/   # Folder berisi file .csv data curah hujan observasi
+├── output/             # (Auto-generated) Folder output raster & validasi
+└── script_ga.ipynb     # Script utama
+
+```
+
+## Cara Penggunaan
+
+1. **Persiapan Data**: Unggah data CHIRPS, Shapefile, dan data stasiun ke Google Drive sesuai struktur direktori di atas.
+2. **Konfigurasi**: Sesuaikan *path* direktori pada bagian `BAGIAN 1: SETUP & KONFIGURASI` di dalam script.
+3. **Eksekusi**: Jalankan script secara berurutan mulai dari import library hingga visualisasi.
+4. **Output**: Hasil validasi (CSV) dan raster terkoreksi (GeoTIFF) akan tersimpan otomatis di folder output.
+
+## Hasil Validasi (Contoh)
+
+Berdasarkan uji coba pada stasiun validasi independen, metode ini mampu meningkatkan korelasi dan mereduksi bias data CHIRPS secara signifikan. Berikut adalah contoh format ringkasan statistik output:
+
+| Stasiun Validasi | NSE (Raw) | NSE (Corrected) | R (Raw) | R (Corrected) |
+| --- | --- | --- | --- | --- |
+| **Muara Tembesi** | -0.45 | **0.62** | 0.55 | **0.81** |
+| **Rantau Pandan** | 0.12 | **0.58** | 0.42 | **0.76** |
+
+Detail statistik lengkap tersedia pada file output `Hasil_Validasi_GA_NSE_R_RSR.csv`.
+
+## Penulis
+
+**Jariyan Arifudin** Mahasiswa Geografi Lingkungan
+
+Universitas Gadjah Mada (UGM)
+
+---
+
+*Repositori ini merupakan bagian dari penelitian tugas akhir/skripsi untuk studi analisis spasial parameter iklim.*
