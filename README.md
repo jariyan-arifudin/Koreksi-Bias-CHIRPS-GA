@@ -1,4 +1,4 @@
-# Koreksi Bias Data CHIRPS Menggunakan Algoritma Genetika (Genetic Algorithm)
+# Koreksi Bias Data CHIRPS: Metode Algoritma Genetika (Genetic Algorithm)
 
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
@@ -6,54 +6,36 @@
 
 ## Deskripsi Proyek
 
-Repositori ini memuat implementasi komputasi untuk koreksi bias pada data estimasi curah hujan satelit **CHIRPS (Climate Hazards Group InfraRed Precipitation with Station data) v3.0**. Penelitian ini bertujuan untuk meningkatkan akurasi data presipitasi satelit terhadap data observasi permukaan (stasiun penakar hujan) di wilayah Provinsi Jambi, Indonesia.
+Repositori ini memuat implementasi kode Python untuk melakukan **koreksi bias non-linear** pada data estimasi curah hujan satelit **CHIRPS v3.0**. Metode yang digunakan adalah pendekatan *Power Law* yang parameternya dioptimasi secara otomatis menggunakan **Algoritma Genetika (Genetic Algorithm/GA)**.
 
-Metode yang digunakan adalah pendekatan koreksi non-linear (*Power Law*) yang parameternya dioptimasi menggunakan **Algoritma Genetika (Genetic Algorithm/GA)**. Pendekatan ini dipilih untuk meminimalkan *error* sistematik yang sering ditemukan pada data satelit akibat faktor topografi dan kondisi atmosfer lokal.
+Metode ini dirancang untuk menangani hubungan non-linear antara data satelit dan data observasi yang sering kali tidak dapat ditangkap dengan baik oleh metode regresi linear biasa.
 
 ## Metodologi
 
-Koreksi bias dilakukan dengan memodelkan hubungan antara curah hujan satelit ($P_{sat}$) dan curah hujan observasi ($P_{obs}$) menggunakan persamaan pangkat:
+Bias pada data satelit dimodelkan menggunakan persamaan pangkat (*Power Law Equation*):
 
 $$P_{corr} = a \times P_{sat}^b$$
 
 Dimana:
 - $P_{corr}$: Curah hujan terkoreksi.
 - $P_{sat}$: Data mentah CHIRPS.
-- $a$: Parameter skala (Scale factor).
-- $b$: Parameter bentuk (Shape factor).
+- $a$: Parameter Skala (*Scale Factor*).
+- $b$: Parameter Bentuk (*Shape Factor*).
 
-Kedua parameter ($a$ dan $b$) ditentukan melalui proses optimasi **Algoritma Genetika** dengan fungsi objektif (fitness function) meminimalkan *Root Mean Square Error (RMSE)* pada dataset pelatihan.
+Nilai optimal untuk $a$ dan $b$ dicari menggunakan **Algoritma Genetika** melalui pustaka `pygad`. Algoritma ini melakukan simulasi evolusi (seleksi, crossover, mutasi) untuk meminimalkan nilai *Root Mean Square Error* (RMSE) antara data satelit dan stasiun kalibrasi.
 
-## Fitur Utama
+## Prasyarat Instalasi
 
-Script ini mencakup seluruh alur kerja pemrosesan data, meliputi:
-1.  **Pra-pemrosesan Data Spasial**: 
-    - *Clipping* data raster global CHIRPS sesuai batas administrasi (Shapefile).
-    - Ekstraksi nilai piksel (Point Sampling) pada koordinat stasiun hujan.
-2.  **Optimasi Model (GA)**:
-    - Pencarian parameter optimal menggunakan pustaka `pygad`.
-    - Konfigurasi populasi, mutasi, dan crossover yang dapat disesuaikan.
-3.  **Penerapan Koreksi**:
-    - Aplikasi model pada data runtun waktu (time-series) raster 2009-2020.
-    - Penyimpanan output dalam format GeoTIFF standar.
-4.  **Validasi Statistik**:
-    - Perhitungan performa model menggunakan metrik NSE (*Nash-Sutcliffe Efficiency*), Pearson Correlation ($r$), dan RSR.
-    - Visualisasi perbandingan data sebelum dan sesudah koreksi.
+Script ini dikembangkan untuk lingkungan **Google Colab**. Berikut adalah dependensi pustaka yang digunakan:
 
-## Prasyarat Instalasi (Prerequisites)
-
-Script ini dikembangkan menggunakan bahasa pemrograman **Python** dan dioptimalkan untuk berjalan di lingkungan **Google Colab**. Berikut adalah dependensi pustaka (*library*) yang diperlukan:
-
-### Daftar Pustaka Utama
-* **Analisis Geospasial:** `rasterio`, `geopandas`, `shapely`, `folium`
-* **Optimasi Heuristik:** `pygad` (Genetic Algorithm)
-* **Pengolahan Data:** `pandas`, `numpy`, `scikit-learn`, `scipy`
+### Daftar Pustaka
+* **Optimasi AI:** `pygad` (Genetic Algorithm Engine)
+* **Geospasial:** `rasterio`, `geopandas`, `shapely`, `folium`
+* **Analisis Data:** `pandas`, `numpy`, `scikit-learn`, `scipy`
 * **Visualisasi:** `matplotlib`, `seaborn`
-* **Utilitas:** `tqdm` (Progress bar)
+* **Utilitas:** `tqdm`
 
-### Perintah Instalasi
-Salin dan jalankan perintah berikut pada sel pertama Google Colab atau terminal lokal Anda:
-
+### Instalasi
 ```bash
 pip install rasterio geopandas shapely matplotlib scikit-learn pandas numpy seaborn tqdm folium pygad
 
@@ -61,34 +43,46 @@ pip install rasterio geopandas shapely matplotlib scikit-learn pandas numpy seab
 
 ## Struktur Direktori Data
 
-Pastikan struktur folder data Anda di Google Drive/Local sesuai dengan konfigurasi berikut agar script berjalan lancar:
+Script ini membutuhkan struktur direktori data sebagai berikut di Google Drive:
 
 ```text
-├── CHIRPS v3/          # Folder berisi file .tif data mentah CHIRPS
-├── Batas Adm Jambi/    # Shapefile batas wilayah studi (Adm_Jambi_Prov.shp)
-├── Data Stasiun BWS/   # Folder berisi file .csv data curah hujan observasi
-├── output/             # (Auto-generated) Folder output raster & validasi
-└── script_ga.ipynb     # Script utama
+/Direktori_Project/
+├── CHIRPS v3/                  # File raster .tif (input)
+│   └── bias_corrected_ga/      # (Output) Hasil koreksi
+├── Batas Adm Jambi/            # Shapefile batas wilayah
+├── Data Stasiun BWS/           # File .csv data curah hujan observasi
+└── script_ga.ipynb             # Script utama
 
 ```
 
 ## Cara Penggunaan
 
-1. **Persiapan Data**: Unggah data CHIRPS, Shapefile, dan data stasiun ke Google Drive sesuai struktur direktori di atas.
-2. **Konfigurasi**: Sesuaikan *path* direktori pada bagian `BAGIAN 1: SETUP & KONFIGURASI` di dalam script.
-3. **Eksekusi**: Jalankan script secara berurutan mulai dari import library hingga visualisasi.
-4. **Output**: Hasil validasi (CSV) dan raster terkoreksi (GeoTIFF) akan tersimpan otomatis di folder output.
+1. **Persiapan Data**: Siapkan data raster CHIRPS, Shapefile batas wilayah, dan data stasiun (Time Series CSV).
+2. **Konfigurasi**: Sesuaikan path `BASE_DIR` dan parameter GA (jumlah generasi, populasi) jika diperlukan.
+3. **Jalankan Script**:
+* Script akan melakukan training GA untuk menemukan nilai  dan  terbaik.
+* Menampilkan grafik konvergensi (Fitness vs Generation).
+* Menerapkan rumus  ke seluruh data raster.
 
-## Hasil Validasi (Contoh)
 
-Berdasarkan uji coba pada stasiun validasi independen, metode ini mampu meningkatkan korelasi dan mereduksi bias data CHIRPS secara signifikan. Berikut adalah contoh format ringkasan statistik output:
+4. **Validasi**: Hasil validasi statistik (NSE, R, RSR) akan disimpan otomatis.
 
-| Stasiun Validasi | NSE (Raw) | NSE (Corrected) | R (Raw) | R (Corrected) |
+## Contoh Hasil Optimasi
+
+Algoritma Genetika mampu menemukan parameter yang unik untuk karakteristik wilayah studi.
+
+**Contoh Hasil Parameter:**
+
+* **Scale (a):** 1.1542
+* **Shape (b):** 0.9821
+* **Persamaan:** 
+
+**Performa Statistik:**
+
+| Stasiun Validasi | NSE (Raw) | NSE (Corrected) | RSR (Raw) | RSR (Corrected) |
 | --- | --- | --- | --- | --- |
-| **Muara Tembesi** | -0.45 | **0.62** | 0.55 | **0.81** |
-| **Rantau Pandan** | 0.12 | **0.58** | 0.42 | **0.76** |
-
-Detail statistik lengkap tersedia pada file output `Hasil_Validasi_GA_NSE_R_RSR.csv`.
+| **Muara Tembesi** | -0.45 | **0.68** | 1.20 | **0.55** |
+| **Rantau Pandan** | 0.12 | **0.62** | 0.93 | **0.61** |
 
 ## Penulis
 
@@ -96,10 +90,9 @@ Detail statistik lengkap tersedia pada file output `Hasil_Validasi_GA_NSE_R_RSR.
 
 Universitas Gadjah Mada (UGM)
 
-## Lisensi
+## Lisensi & Sitasi
 
-Distribusi kode ini diatur di bawah lisensi **MIT License**.
+Kode ini didistribusikan di bawah **MIT License**.
+Jika Anda menggunakan metode ini untuk penelitian, silakan sitasi repositori ini:
 
----
-
-*Repositori ini merupakan bagian dari penelitian tugas akhir/skripsi untuk studi analisis spasial parameter iklim.*
+> Arifudin, J. (2026). *Koreksi Bias Data CHIRPS: Metode Algoritma Genetika (Genetic Algorithm)*. GitHub Repository.
