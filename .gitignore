@@ -1,0 +1,19 @@
+# Mengabaikan file checkpoint Jupyter/Colab
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# Mengabaikan folder cache Python
+__pycache__/
+*.py[cod]
+
+# Mengabaikan file sistem
+.DS_Store
+Thumbs.db
+
+# Mengabaikan data (PENTING: Jangan unggah data CHIRPS/Shapefile besar ke GitHub)
+*.tif
+*.tiff
+*.shp
+*.shx
+*.dbf
+*.csv
