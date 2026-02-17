@@ -96,6 +96,10 @@ Detail statistik lengkap tersedia pada file output `Hasil_Validasi_GA_NSE_R_RSR.
 
 Universitas Gadjah Mada (UGM)
 
+## Lisensi
+
+Distribusi kode ini diatur di bawah lisensi **MIT License**.
+
 ---
 
 *Repositori ini merupakan bagian dari penelitian tugas akhir/skripsi untuk studi analisis spasial parameter iklim.*
