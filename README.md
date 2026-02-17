@@ -40,22 +40,6 @@ Script ini mencakup seluruh alur kerja pemrosesan data, meliputi:
     - Perhitungan performa model menggunakan metrik NSE (*Nash-Sutcliffe Efficiency*), Pearson Correlation ($r$), dan RSR.
     - Visualisasi perbandingan data sebelum dan sesudah koreksi.
 
-## Struktur Direktori
-
-Pastikan struktur folder data Anda di Google Drive/Local sesuai dengan konfigurasi berikut:
-
-```text
-├── data/
-│   ├── CHIRPS v3/          # File .tif data mentah CHIRPS
-│   ├── Batas Adm/          # Shapefile batas wilayah studi
-│   └── Data Stasiun/       # File .csv data curah hujan observasi
-├── output/
-│   ├── bias_corrected_ga/  # (Auto-generated) Hasil raster terkoreksi
-│   └── validation/         # (Auto-generated) Tabel & plot validasi
-├── script.py               # Script utama
-├── requirements.txt        # Daftar pustaka Python
-└── README.md               # Dokumentasi proyek
-
 ## Prasyarat Instalasi
 
 Script ini dikembangkan menggunakan bahasa pemrograman **Python** dan dioptimalkan untuk berjalan di lingkungan **Google Colab**. Berikut adalah dependensi pustaka (*library*) yang diperlukan untuk menjalankan analisis:
@@ -71,4 +55,21 @@ Script ini dikembangkan menggunakan bahasa pemrograman **Python** dan dioptimalk
 Salin dan jalankan perintah berikut pada sel pertama Google Colab atau terminal lokal Anda untuk menginstal seluruh dependensi:
 
 ```bash
-pip install rasterio geopandas shapely matplotlib scikit-learn pandas numpy seaborn tqdm folium pygad
+"pip install rasterio geopandas shapely matplotlib scikit-learn pandas numpy seaborn tqdm folium pygad"
+```
+
+## Struktur Direktori
+
+Pastikan struktur folder data Anda di Google Drive/Local sesuai dengan konfigurasi berikut:
+
+```text
+├── data/
+│   ├── CHIRPS v3/          # File .tif data mentah CHIRPS
+│   ├── Batas Adm/          # Shapefile batas wilayah studi
+│   └── Data Stasiun/       # File .csv data curah hujan observasi
+├── output/
+│   ├── bias_corrected_ga/  # (Auto-generated) Hasil raster terkoreksi
+│   └── validation/         # (Auto-generated) Tabel & plot validasi
+├── script.py               # Script utama
+├── requirements.txt        # Daftar pustaka Python
+└── README.md               # Dokumentasi proyek
